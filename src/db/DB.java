@@ -1,12 +1,8 @@
 package db;
 
-import bean.AnswerBean;
-import bean.QuestionBean;
-import bean.QuizBean;
 import bean.UserBean;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 public class DB {
     private static List<UserBean> users = new ArrayList();
