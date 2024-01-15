@@ -26,6 +26,6 @@ public class UserRepository {
     }
 
     public static List<UserBean> getAllUsers() {
-        return DB.getUserList();
+        return null;
     }
 }
