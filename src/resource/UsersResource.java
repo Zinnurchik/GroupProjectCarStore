@@ -1,53 +1,36 @@
 package resource;
 
 import bean.ApiResponce;
-import bean.UserBean;
-import db.DB;
+import bean.User;
+import db.UserRepository;
 
-public class UsersResource implements BaseCrudResource<UserBean>{
-    public UsersResource() {
+public class UsersResource implements BaseCrudResource<User>{
+    UserRepository repository = new UserRepository();
+    @Override
+    public ApiResponce add(User bean) {
+        User newUser = repository.add(bean);
+        return newUser == null ? new ApiResponce(400, "User already exist", null) :
+                new ApiResponce(200, "Successfully created", newUser);
     }
 
-    public ApiResponce add(UserBean bean) {
-        UserBean newUser = DB.addUser(bean);
-        return newUser == null ? new ApiResponce(400, "User already exist!", (Object)null) : new ApiResponce(200, "Successfully created", newUser);
-    }
-
+    @Override
     public ApiResponce get(Integer id) {
-        UserBean user = DB.getUser(id);
-        if (user == null) {
-            System.out.println("User does not exist!");
-        } else {
-            System.out.println(user);
-        }
-
         return null;
     }
 
-    public ApiResponce update(UserBean newBean) {
-        boolean ok = DB.setUser(newBean);
-        if (!ok) {
-            System.out.println("User update failed!");
-        } else {
-            System.out.println(newBean);
-        }
-
+    @Override
+    public ApiResponce update(User newBean) {
         return null;
     }
 
+    @Override
     public ApiResponce delete(Integer id) {
-        boolean ok = DB.deleteUser(id);
-        if (!ok) {
-            System.out.println("User delete failed!");
-        } else {
-            System.out.println("User has been successfully deleted!");
-        }
-
         return null;
     }
-
-    public ApiResponce login(UserBean user) {
-        UserBean user1 = DB.getUser(user.getLogin(), user.getPassword());
-        return user1 == null ? new ApiResponce(400, "user not found", (Object)null) : new ApiResponce(200, "success", user1);
+    public ApiResponce login(User user) {
+        UserRepository repository = new UserRepository();
+        User newUser = repository.getUser(user);
+        return newUser == null ? new ApiResponce(400, "User not found", null) :
+                new ApiResponce(200, "Success", newUser);
     }
 }
